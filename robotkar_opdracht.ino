@@ -1,12 +1,21 @@
+#include <NewPing.h>
   
 int directionPinRight = 12;
 int pwmPinRight = 3;
-int brakePinRight = 9;
+
+
 
 //uncomment if using channel B, and remove above definitions
 int directionPinLeft = 13;
 int pwmPinLeft = 11;
-int brakePinLeft = 8;
+
+
+//ping variabelen
+int trigPin = 9;
+int echoPin = 8;
+int distance;
+int duration;
+
 
 // controls
 int speed = 80;
@@ -45,26 +54,39 @@ void setup() {
   pinMode(directionPinLeft, OUTPUT);
   pinMode(pwmPinRight, OUTPUT);
   pinMode(pwmPinLeft, OUTPUT);
-  pinMode(brakePinRight, OUTPUT);
-  pinMode(brakePinLeft, OUTPUT);
   pinMode(lineSensor1, INPUT);
   pinMode(lineSensor2, INPUT);
   pinMode(lineSensor3, INPUT);
   pinMode(lineSensor4, INPUT);
   pinMode(lineSensor5, INPUT);
+  pinMode (trigPin, OUTPUT);
+  pinMode (echoPin, INPUT);
   Serial.begin(9600);
+}
+
+void ping(){
+   digitalWrite (trigPin, HIGH);
+   delay(50);
+   digitalWrite (trigPin, LOW);
+   duration = pulseIn(echoPin,HIGH);
+   distance = (duration/2)/29.1;
+   if(distance >= 50){
+
+   }
+   delay(200);
+   Serial.print(distance);
+   Serial.println(" cm");
+
 }
 
 void releaseBreak() {
   //release breaks
-  digitalWrite(brakePinRight, LOW);
-  digitalWrite(brakePinLeft, LOW);
+  changeSpeed(65);
 }
 
 void setBreak() {
   //sets breaks
-  digitalWrite(brakePinRight, HIGH);
-  digitalWrite(brakePinLeft, HIGH);
+  changeSpeed(0);
 }
 
 void directionFront() {
@@ -148,7 +170,7 @@ void loop() {
       // changeSpeed(0);
       // setBreak();
     }
-    if memcmp(line, right, sizeof(line)) == 0)
+    if (memcmp(line, right, sizeof(line)) == 0){
 
     longInt = millis();
     if (lineS3 == 0 && lineS4 == 1) {
@@ -157,7 +179,9 @@ void loop() {
     
     //write a low state to the direction pin (13)
     }
+    }
   }
+  
   
 }
 
